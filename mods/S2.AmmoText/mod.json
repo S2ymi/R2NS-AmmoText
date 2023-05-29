@@ -1,0 +1,112 @@
+{
+	"Name": "S2.AmmoText",
+	"Description": "Adds a customisable text indicator for Low Ammo and/or Reload.",
+	"LoadPriority": 4,
+	"RequiredOnClient": false,
+	"Version": "1.0.2",
+	
+	"Scripts": [
+		{
+			"Path": "s2_reloading_text.nut",
+			"RunOn": "CLIENT || UI",
+			"ClientCallback": {
+				"After": "reloadingTextPrecache"
+			},
+			"UICallback": {
+				"Before": "reloadingTextSettings"
+			}
+		}
+	],
+	"ConVars": [
+		{
+		  "Name": "s2_reload_main_pos",
+		  "DefaultValue": "0.6 0.6 0.0",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_main_size",
+		  "DefaultValue": "30.0",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_main_pilots",
+		  "DefaultValue": "1",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_main_titans",
+		  "DefaultValue": "1",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_low_text",
+		  "DefaultValue": "Low Ammo",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_low_alpha",
+		  "DefaultValue": "0.75",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_min_ammo",
+		  "DefaultValue": "30",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_low_static_col",
+		  "DefaultValue": "1.0 0.1 0.1",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_low_is_static",
+		  "DefaultValue": "0",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_low_first_col",
+		  "DefaultValue": "1.0 0.5 0.4",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_low_second_col",
+		  "DefaultValue": "1.0 0.0 0.0",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_low_rgb",
+		  "DefaultValue": "0",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_none_text",
+		  "DefaultValue": "Reloading",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_none_alpha",
+		  "DefaultValue": "0.5",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_none_col",
+		  "DefaultValue": "1.0 0.55 0.0",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_none_rgb",
+		  "DefaultValue": "0",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_ads_fade",
+		  "DefaultValue": "1",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_ads_fade_opa",
+		  "DefaultValue": "0.3",
+		  "Flags": 16777232
+		}
+	]
+}

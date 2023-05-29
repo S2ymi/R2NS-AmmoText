@@ -1,0 +1,9 @@
+{
+    "name": "AmmoText",
+    "version_number": "1.0.2",
+    "website_url": "",
+    "description": "Adds a text hud element on low ammo and reload.",
+    "dependencies": [
+        "EladNLG-ModSettings-2.0.2"
+    ]
+}
