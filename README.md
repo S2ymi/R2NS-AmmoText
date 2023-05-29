@@ -64,7 +64,7 @@ In case of any crashes and/or questions ping me (S2ymi#6601) on the Official Nor
    - Don't set it to 0
 - Flashing Switch
    - Toggles between flashing text and no flashing text
--RGB Cycle
+- RGB Cycle
    - Overrides previous colour settings and makes stuff RGB
    - :D
 ## Reloading
