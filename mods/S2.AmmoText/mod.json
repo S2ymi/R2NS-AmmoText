@@ -3,7 +3,7 @@
 	"Description": "Adds a customisable text indicator for Low Ammo and/or Reload.",
 	"LoadPriority": 4,
 	"RequiredOnClient": false,
-	"Version": "1.0.2",
+	"Version": "1.0.3",
 	
 	"Scripts": [
 		{

@@ -40,7 +40,8 @@ In case of any crashes and/or questions ping me (S2ymi#6601) on the Official Nor
    - Alpha value for use on `ADS Fade Toggle`
  
 ## Low Ammo
-- Text
+- Low Ammo Text
+- Out of Ammo Text
 - Alpha
    - Range 0-1
    - Also used on ADS if `ADS Fade Toggle` is switched off
@@ -58,6 +59,11 @@ In case of any crashes and/or questions ping me (S2ymi#6601) on the Official Nor
    - Same format as `Static Colour`
 - Second Colour
    - Same format as `Static Colour`
+- Flashing Magaine %
+   - Percent of the magazine after which the Low Ammo text flashes
+   - Don't set it to 0
+- Flashing Switch
+   - Toggles between flashing text and no flashing text
 -RGB Cycle
    - Overrides previous colour settings and makes stuff RGB
    - :D
@@ -68,6 +74,8 @@ In case of any crashes and/or questions ping me (S2ymi#6601) on the Official Nor
 - Colour
    - RGB colour format
    - Range 0-1
+- Flashing Switch
+   - Toggles between flashing text and no flashing text
 - RGB Cycle
    - Overrides previous colour setting and makes stuff RGB
    - :D
