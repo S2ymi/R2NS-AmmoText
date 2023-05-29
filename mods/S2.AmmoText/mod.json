@@ -44,6 +44,11 @@
 		  "Flags": 16777232
 		},
 		{
+		  "Name": "s2_reload_low_reserve_text",
+		  "DefaultValue": "Out Of Ammo",
+		  "Flags": 16777232
+		},
+		{
 		  "Name": "s2_reload_low_alpha",
 		  "DefaultValue": "0.75",
 		  "Flags": 16777232
@@ -74,6 +79,16 @@
 		  "Flags": 16777232
 		},
 		{
+		  "Name": "s2_reload_flash_min_ammo",
+		  "DefaultValue": "100",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_low_flash",
+		  "DefaultValue": "0",
+		  "Flags": 16777232
+		},
+		{
 		  "Name": "s2_reload_low_rgb",
 		  "DefaultValue": "0",
 		  "Flags": 16777232
@@ -91,6 +106,11 @@
 		{
 		  "Name": "s2_reload_none_col",
 		  "DefaultValue": "1.0 0.55 0.0",
+		  "Flags": 16777232
+		},
+		{
+		  "Name": "s2_reload_none_flash",
+		  "DefaultValue": "0",
 		  "Flags": 16777232
 		},
 		{
