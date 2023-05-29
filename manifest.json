@@ -1,6 +1,6 @@
 {
     "name": "AmmoText",
-    "version_number": "1.0.2",
+    "version_number": "1.0.3",
     "website_url": "",
     "description": "Adds a text hud element on low ammo and reload.",
     "dependencies": [

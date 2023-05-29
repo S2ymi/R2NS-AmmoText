@@ -15,19 +15,23 @@ void function reloadingTextSettings(){
 
     AddModCategory("Low Ammo")
     AddConVarSetting("s2_reload_low_text", "Text", "string")
+    AddConVarSetting("s2_reload_low_reserve_text", "No Extra Ammo Text", "string")
     AddConVarSetting("s2_reload_low_alpha", "Alpha", "float")
     AddConVarSetting("s2_reload_min_ammo", "Magazine %", "Int")
     AddConVarSetting("s2_reload_low_static_col", "Static Colour", "vector")
     AddConVarSettingEnum("s2_reload_low_is_static", "Static Colour Toggle", ["Off", "On"])
     AddConVarSetting("s2_reload_low_first_col", "First Colour", "vector")
     AddConVarSetting("s2_reload_low_second_col", "Second Colour", "vector")
-    AddConVarSettingEnum("s2_reload_low_rgb", "RGB Cycle", ["Off", "On :D"])
+    AddConVarSetting("s2_reload_flash_min_ammo", "Flash Magazine %", "Int")
+    AddConVarSettingEnum("s2_reload_low_flash", "Flash Toggle", ["Off", "On"])
+    AddConVarSettingEnum("s2_reload_low_rgb", "RGB Cycle Toggle", ["Off", "On :D"])
 
     AddModCategory("Reloading")
     AddConVarSetting("s2_reload_none_text", "Text","string")
     AddConVarSetting("s2_reload_none_alpha", "Alpha","float")
     AddConVarSetting("s2_reload_none_col", "Colour","vector")
-    AddConVarSettingEnum("s2_reload_none_rgb", "RGB Cycle",["Off", "On :D"])
+    AddConVarSettingEnum("s2_reload_none_flash", "Flash Toggle", ["Off", "On"])
+    AddConVarSettingEnum("s2_reload_none_rgb", "RGB Cycle Toggle",["Off", "On :D"])
     #endif
 }
 
@@ -50,10 +54,10 @@ vector function GetConVarFloat3(string convar){
     unreachable
 }
 
-float function GetMinAmmoFrac(){
-    int percentConVar = GetConVarInt("s2_reload_min_ammo")
+float function GetMinAmmoFrac(inputConVar){
+    int percentConVar = GetConVarInt(inputConVar)
     if(percentConVar > 0)
-        return float(percentConVar/100)
+        return float(percentConVar)/100
     else{
         SetConVarInt("s2_reload_min_ammo", 30)
         throw "Invalid input, Magazine % can't be below or equal to 0!\nIf you want to disable Low Ammo set its Alpha to 0.0!"
@@ -86,22 +90,29 @@ void function reloadingTextMain(){
 
         //  low
         float lowAlpha = GetConVarFloat("s2_reload_low_alpha")
-        float minAmmoFrac = GetMinAmmoFrac()
+        float minAmmoFrac = GetMinAmmoFrac("s2_reload_min_ammo")
+        float flashMinAmmoFrac = GetMinAmmoFrac("s2_reload_flash_min_ammo")
         bool lowIsStatic = (GetConVarInt("s2_reload_low_is_static") == 1)
+        bool lowIsFlash = (GetConVarInt("s2_reload_low_flash") == 1)
         bool lowIsRGB = (GetConVarInt("s2_reload_low_rgb") == 1)
         vector lowStaticCol = GetConVarFloat3("s2_reload_low_static_col")
         vector lowFirstCol = GetConVarFloat3("s2_reload_low_first_col")
         vector lowSecondCol = GetConVarFloat3("s2_reload_low_second_col")
         string lowText = GetConVarString("s2_reload_low_text")
+        string lowReserveText = GetConVarString("s2_reload_low_reserve_text")
 
         //  none
         float noneAlpha = GetConVarFloat("s2_reload_none_alpha")
+        bool noneIsFlash = (GetConVarInt("s2_reload_none_flash") == 1)
         bool noneIsRGB = (GetConVarInt("s2_reload_none_rgb") == 1)
         vector noneCol = GetConVarFloat3("s2_reload_none_col")
         string noneText = GetConVarString("s2_reload_none_text")
 
         ////
 
+        RuiSetFloat(rui, "msgAlpha", 0.0)
+        RuiSetFloat(rui, "msgFontSize", mainSize)
+        RuiSetFloat2(rui, "msgPos", mainPos)
         entity player = GetLocalClientPlayer()
         if(player == null || !IsValid(player))
 			continue
@@ -115,36 +126,37 @@ void function reloadingTextMain(){
         if(!IsValid(weapon))
 			continue
         string currentWeaponName = weapon.GetWeaponClassName()
-        RuiSetFloat(rui, "msgAlpha", 0.0)
-        RuiSetFloat(rui, "msgFontSize", mainSize)
-        RuiSetFloat2(rui, "msgPos", mainPos)
         if(weaponNameCheck(currentWeaponName, mainPilotWeapons, mainTitanWeapons)){
-            float minAmmoFrac = 0.3
             float currentAmmo
             float maxAmmo
+            float reserveAmmo = float(weapon.GetWeaponPrimaryAmmoCount())
             if(currentWeaponName != "mp_weapon_defender"){
                 currentAmmo = float(weapon.GetWeaponPrimaryClipCount())
                 maxAmmo = float(weapon.GetWeaponPrimaryClipCountMax())
             }
             else{
-                currentAmmo = float(weapon.GetWeaponPrimaryAmmoCount())
+                currentAmmo = reserveAmmo
                 maxAmmo = (weapon.HasMod("extended_ammo")) ? 25.0 : 20.0
             }
             float ammoFrac = currentAmmo/maxAmmo
             vector rainbow
             float zoomFrac = player.GetZoomFrac()
-            if(ammoFrac <= minAmmoFrac && !weapon.IsReloading()){
-                if(!mainAdsToggle)
-                    RuiSetFloat(rui, "msgAlpha", lowAlpha)
+            if(weapon.IsReloading() || (currentAmmo == 0 && reserveAmmo > 0)){
+                float noneFlashAlpha
+                if(noneIsFlash)
+                    noneFlashAlpha = (sin(Time() * PI * 2)) + 1
                 else
-                    RuiSetFloat(rui, "msgAlpha", (((zoomFrac/1)*mainAdsAlpha) + ((1-(zoomFrac/1))*lowAlpha)))
-                RuiSetString(rui, "msgText", lowText)
-                if(!lowIsRGB){
-                    if(lowIsStatic)
-                        RuiSetFloat3(rui, "msgColor", lowStaticCol)
-                    else
-                        RuiSetFloat3(rui, "msgColor", (((ammoFrac/minAmmoFrac) * lowFirstCol) + ((1 - (ammoFrac/minAmmoFrac)) * lowSecondCol)))
-                }
+                    noneFlashAlpha = 1
+                if(!mainAdsToggle)
+                    RuiSetFloat(rui, "msgAlpha", noneAlpha)
+                else
+                    RuiSetFloat(rui, "msgAlpha", (((zoomFrac/1)*mainAdsAlpha) + ((1-(zoomFrac/1))*noneAlpha))*noneFlashAlpha)
+                if(weapon.IsReloading())
+                    RuiSetString(rui, "msgText", noneText)
+                else
+                    RuiSetString(rui, "msgText", lowText)
+                if(!noneIsRGB)
+                    RuiSetFloat3(rui, "msgColor", noneCol)
                 else{
                     rainbow.x = sin(Time() * PI * 2)
                     rainbow.y = sin((Time() + 1.0/3.0) * PI * 2)
@@ -152,14 +164,33 @@ void function reloadingTextMain(){
                     RuiSetFloat3(rui, "msgColor", rainbow)
                 }
             }
-            if(weapon.IsReloading()){
-                if(!mainAdsToggle)
-                    RuiSetFloat(rui, "msgAlpha", noneAlpha)
+            else if(ammoFrac <= minAmmoFrac){
+                float lowFlashAlpha
+                if(lowIsFlash && currentAmmo <= 1)
+                    lowFlashAlpha = (sin(Time() * PI * 8))
+                else if(lowIsFlash && ammoFrac <= flashMinAmmoFrac)
+                    lowFlashAlpha = (sin(Time() * PI * 3)) + 1
                 else
-                    RuiSetFloat(rui, "msgAlpha", (((zoomFrac/1)*mainAdsAlpha) + ((1-(zoomFrac/1))*noneAlpha)))
-                RuiSetString(rui, "msgText", noneText)
-                if(!noneIsRGB)
-                    RuiSetFloat3(rui, "msgColor", lowStaticCol)
+                    lowFlashAlpha = 1
+                if(!mainAdsToggle)
+                    RuiSetFloat(rui, "msgAlpha", lowAlpha)
+                else
+                    RuiSetFloat(rui, "msgAlpha", (((zoomFrac/1)*mainAdsAlpha) + ((1-(zoomFrac/1))*lowAlpha))*lowFlashAlpha)
+                if(currentAmmo == 0)
+                    RuiSetString(rui, "msgText", lowReserveText)
+                else
+                    RuiSetString(rui, "msgText", lowText)
+                if(!lowIsRGB){
+                    if(lowIsStatic)
+                        RuiSetFloat3(rui, "msgColor", lowStaticCol)
+                    else{
+                        if(currentAmmo >= 1)
+                            ammoFrac = (currentAmmo - 1)/(maxAmmo - 1)
+                        else
+                            ammoFrac = 0
+                        RuiSetFloat3(rui, "msgColor", (((ammoFrac/minAmmoFrac) * lowFirstCol) + ((1 - (ammoFrac/minAmmoFrac)) * lowSecondCol)))
+                    }
+                }
                 else{
                     rainbow.x = sin(Time() * PI * 2)
                     rainbow.y = sin((Time() + 1.0/3.0) * PI * 2)
