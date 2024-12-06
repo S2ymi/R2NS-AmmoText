@@ -73,13 +73,3 @@ In case of any crashes and/or questions ping me (S2ymi#6601) on the Official Nor
    - :D
 
 <hr>
-
-# Preview:
-![image](https://cdn.discordapp.com/attachments/974722927704539166/994937830159687710/unknown.png)
- 
-![image](https://cdn.discordapp.com/attachments/974722927704539166/994938081792774214/unknown.png)
- 
-![image](https://cdn.discordapp.com/attachments/974722927704539166/994938204354519090/unknown.png)
-
-<hr>
- 
