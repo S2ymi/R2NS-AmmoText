@@ -4,23 +4,6 @@
 
 <hr>
 
-# Contact
-In case of any crashes and/or questions ping me (S2ymi#6601) on the Official Northstar Discord in the #modding-chat channel
-
-<hr>
-
-# Changelog:
-
-## v1.0.2:
-
-- Added ModSettings 2.0.0+ compatibility
-
-## v1.0.1:
-
-- Fixed a crash
-
-<hr>
-
 # Settings:
 ## Main
 - Position
